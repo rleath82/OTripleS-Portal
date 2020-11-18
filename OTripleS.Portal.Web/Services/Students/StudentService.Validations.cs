@@ -22,6 +22,8 @@ namespace OTripleS.Portal.Web.Services.Students
                     throw new InvalidStudentException(parameterName: nameof(Student.FirstName), parameterValue: student.FirstName);
                 case { } when IsInvalid(student.BirthDate):
                     throw new InvalidStudentException(parameterName: nameof(Student.BirthDate), parameterValue: student.BirthDate);
+                case { } when IsInvalid(student.CreatedDate):
+                    throw new InvalidStudentException(parameterName: nameof(Student.CreatedDate), parameterValue: student.CreatedDate);
                 case { } when IsInvalid(student.CreatedBy):
                     throw new InvalidStudentException(parameterName: nameof(Student.CreatedBy), parameterValue: student.CreatedBy);
                 case { } when IsInvalid(student.UpdatedBy):
