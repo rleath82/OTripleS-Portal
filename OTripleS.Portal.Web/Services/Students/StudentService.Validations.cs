@@ -16,6 +16,8 @@ namespace OTripleS.Portal.Web.Services.Students
                     throw new InvalidStudentException(parameterName: nameof(Student.Id), parameterValue: student.Id);
                 case { } when IsInvalid(student.UserId):
                     throw new InvalidStudentException(parameterName: nameof(Student.UserId), parameterValue: student.UserId);
+                case { } when IsInvalid(student.IdentityNumber):
+                    throw new InvalidStudentException(parameterName: nameof(Student.IdentityNumber), parameterValue: student.IdentityNumber);
             }            
         }
 
