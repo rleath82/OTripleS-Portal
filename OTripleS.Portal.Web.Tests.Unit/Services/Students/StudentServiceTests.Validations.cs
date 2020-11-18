@@ -67,7 +67,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.apiBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
 
         [Theory]
         [InlineData(null)]
@@ -149,6 +149,38 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
             invalidStudent.FirstName = invalidFirstName;
 
             var invalidStudentException = new InvalidStudentException(parameterName: nameof(Student.FirstName), parameterValue: invalidStudent.FirstName);
+
+            var expectedStudentValidationException = new StudentValidationException(invalidStudentException);
+
+            //when
+            ValueTask<Student> registerStudentTask = this.studentService.RegisterStudentAsync(invalidStudent);
+
+            //then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                registerStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
+
+            this.apiBrokerMock.Verify(broker =>
+                broker.PostStudentAsync(It.IsAny<Student>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.apiBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRegisterIfCreatedByIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidId = Guid.Empty;
+            Student randomStudent = CreateRandomStudent();
+            Student invalidStudent = randomStudent;
+            invalidStudent.CreatedBy = invalidId;
+
+            var invalidStudentException = new InvalidStudentException(parameterName: nameof(Student.CreatedBy), parameterValue: invalidStudent.CreatedBy);
 
             var expectedStudentValidationException = new StudentValidationException(invalidStudentException);
 
