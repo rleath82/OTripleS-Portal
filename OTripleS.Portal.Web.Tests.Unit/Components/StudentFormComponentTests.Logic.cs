@@ -1,12 +1,6 @@
 ﻿using FluentAssertions;
 using OTripleS.Portal.Web.Models.Basics;
 using OTripleS.Portal.Web.Views.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tynamix.ObjectFiller;
 using Xunit;
 
 namespace OTripleS.Portal.Web.Tests.Unit.Components

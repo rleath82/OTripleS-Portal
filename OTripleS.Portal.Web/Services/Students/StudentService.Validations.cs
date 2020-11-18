@@ -8,9 +8,9 @@ namespace OTripleS.Portal.Web.Services.Students
     {
         private void ValidateStudent(Student student)
         {
-            switch(student)
+            switch (student)
             {
-                case null: 
+                case null:
                     throw new NullStudentException();
                 case { } when IsInvalid(student.Id):
                     throw new InvalidStudentException(parameterName: nameof(Student.Id), parameterValue: student.Id);
@@ -30,7 +30,7 @@ namespace OTripleS.Portal.Web.Services.Students
                     throw new InvalidStudentException(parameterName: nameof(Student.CreatedBy), parameterValue: student.CreatedBy);
                 case { } when IsInvalid(student.UpdatedBy):
                     throw new InvalidStudentException(parameterName: nameof(Student.UpdatedBy), parameterValue: student.UpdatedBy);
-            }            
+            }
         }
 
         private static bool IsInvalid(Guid id) => id == Guid.Empty;

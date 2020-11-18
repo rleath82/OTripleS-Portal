@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace OTripleS.Portal.Web.Tests.Unit

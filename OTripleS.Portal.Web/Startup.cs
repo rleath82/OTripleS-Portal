@@ -14,21 +14,21 @@ namespace OTripleS.Portal.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration) => 
+        public Startup(IConfiguration configuration) =>
             Configuration = configuration;
 
         public IConfiguration Configuration { get; }
-       
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor();            
+            services.AddServerSideBlazor();
             AddHttpClient(services);
             AddRootDirectory(services);
             services.AddScoped<ILogger, Logger<LoggingBroker>>();
             services.AddScoped<IApiBroker, ApiBroker>();
             services.AddScoped<ILoggingBroker, LoggingBroker>();
-        }        
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -57,7 +57,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>            
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
                     Times.Once);
 
@@ -67,7 +67,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.apiBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
 
         [Theory]
         [InlineData(null)]

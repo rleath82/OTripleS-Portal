@@ -22,6 +22,6 @@ namespace OTripleS.Portal.Web.Services.Students
             ValidateStudent(student);
 
             return await this.apiBroker.PostStudentAsync(student);
-        });    
+        });
     }
 }
