@@ -112,7 +112,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
 
             var httpResponseException = new HttpResponseException(httpResponseMessage: responseMessage, message: exceptionMessage);
 
-            var httpResponseInternalServerErrorException = new HttpResponseConflictException(responseMessage: responseMessage, message: exceptionMessage);
+            var httpResponseInternalServerErrorException = new HttpResponseInternalServerErrorException(responseMessage: responseMessage, message: exceptionMessage);
 
             return new TheoryData<Exception>
             {
