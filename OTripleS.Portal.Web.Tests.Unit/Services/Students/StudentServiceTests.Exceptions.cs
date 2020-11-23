@@ -123,7 +123,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
 
         [Theory]
         [MemberData(nameof(DependencyApiExceptions))]
-        public async Task ShouldThrowDependencyExceptionOnRegisterIfServerInternalErrorOccursAndLogItAsync(Exception dependencyApiException)
+        public async Task ShouldThrowDependencyExceptionOnRegisterIfDependencyApiErrorOccursAndLogItAsync(Exception dependencyApiException)
         {
             //given
             Student someStudent = CreateRandomStudent();
@@ -148,6 +148,38 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentDependencyException))),
+                    Times.Once);
+
+            this.apiBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRegisterIfErrorOccursAndLogItAsync()
+        {
+            //given
+            Student someStudent = CreateRandomStudent();
+            var serviceException = new Exception();
+
+            var expectedStudentServiceException = new StudentServiceException(serviceException);
+
+            this.apiBrokerMock.Setup(broker =>
+                broker.PostStudentAsync(It.IsAny<Student>()))
+                    .ThrowsAsync(serviceException);
+
+            //when
+            ValueTask<Student> registerStudentTask = this.studentService.RegisterStudentAsync(someStudent);
+
+            //then
+            await Assert.ThrowsAsync<StudentServiceException>(() =>
+                registerStudentTask.AsTask());
+
+            this.apiBrokerMock.Verify(broker =>
+                broker.PostStudentAsync(It.IsAny<Student>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
                     Times.Once);
 
             this.apiBrokerMock.VerifyNoOtherCalls();
