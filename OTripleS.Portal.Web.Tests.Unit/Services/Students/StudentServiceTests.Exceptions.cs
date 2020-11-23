@@ -32,8 +32,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
         public async Task ShouldThrowDependencyValidationExceptionOnRegisterIfBadRequestErrorOccursAndLogItAsync(Exception validationApiException)
         {
             // given
-            Student someStudent = CreateRandomStudent();
-            
+            Student someStudent = CreateRandomStudent();            
 
             var expectedDependencyValidationException = new StudentDependencyValidationException(validationApiException);
 
