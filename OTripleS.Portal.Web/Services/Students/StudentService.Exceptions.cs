@@ -28,6 +28,10 @@ namespace OTripleS.Portal.Web.Services.Students
             {
                 throw CreateAndLogCriticalDependencyException(httpResponseUrlNotFoundException);
             }
+            catch (HttpResponseUnauthorizedException httpResponseUnauthorizedException)
+            {
+                throw CreateAndLogCriticalDependencyException(httpResponseUnauthorizedException);
+            }
             catch (HttpResponseBadRequestException httpResponseBadRequestException)
             {
                 throw CreateAndLogDependencyValidationException(httpResponseBadRequestException);
