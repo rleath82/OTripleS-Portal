@@ -21,7 +21,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
 
             var httpResponseBadRequestException = new HttpResponseBadRequestException(responseMessage: responseMessage, message: exceptionMessage);
 
-            var expectedDependencyValidationException = new StudentDependencyValidationException(httpResponseBadRequestException.InnerException);
+            var expectedDependencyValidationException = new StudentDependencyValidationException(httpResponseBadRequestException);
 
             this.apiBrokerMock.Setup(broker =>
                 broker.PostStudentAsync(It.IsAny<Student>()))

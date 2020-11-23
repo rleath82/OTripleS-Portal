@@ -1,5 +1,6 @@
 ﻿using OTripleS.Portal.Web.Models.Exceptions;
 using OTripleS.Portal.Web.Models.Students;
+using RESTFulSense.Exceptions;
 using System;
 using System.Threading.Tasks;
 
@@ -23,14 +24,27 @@ namespace OTripleS.Portal.Web.Services.Students
             {
                 throw CreateAndLogValidationException(invalidStudentException);
             }
+            catch (HttpResponseBadRequestException httpResponseBadRequestException)
+            {
+                throw CreateAndLogDependencyValidationException(httpResponseBadRequestException);
+            }
         }
 
-        private StudentValidationException CreateAndLogValidationException(Exception nullStudentException)
+        private StudentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var studentValidationException = new StudentValidationException(nullStudentException);
+            var studentValidationException = new StudentValidationException(exception);
             this.loggingBroker.LogError(studentValidationException);
 
             return studentValidationException;
+        }
+
+        private StudentDependencyValidationException CreateAndLogDependencyValidationException(Exception exception)
+        {
+            var studentDependencyValidationException = new StudentDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(studentDependencyValidationException);
+
+            return studentDependencyValidationException;
         }
     }
 }
