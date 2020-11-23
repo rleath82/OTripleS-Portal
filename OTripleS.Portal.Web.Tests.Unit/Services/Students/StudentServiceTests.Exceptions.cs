@@ -133,7 +133,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentDependencyException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentDependencyException))),
                     Times.Once);
 
             this.apiBrokerMock.VerifyNoOtherCalls();

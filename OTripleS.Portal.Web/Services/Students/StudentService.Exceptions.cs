@@ -40,6 +40,10 @@ namespace OTripleS.Portal.Web.Services.Students
             {
                 throw CreateAndLogDependencyValidationException(httpResponseBadRequestException);
             }
+            catch (HttpResponseInternalServerErrorException httpResponseInternalServerErrorException)
+            {
+                throw CreateAndLogDependencyException(httpResponseInternalServerErrorException);
+            }
         }
 
         private StudentValidationException CreateAndLogValidationException(Exception exception)
@@ -64,6 +68,15 @@ namespace OTripleS.Portal.Web.Services.Students
             var studentDependencyException = new StudentDependencyException(exception);
 
             this.loggingBroker.LogCritical(studentDependencyException);
+
+            return studentDependencyException;
+        }
+
+        private StudentDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var studentDependencyException = new StudentDependencyException(exception);
+
+            this.loggingBroker.LogError(studentDependencyException);
 
             return studentDependencyException;
         }
