@@ -45,21 +45,34 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
             this.loggingBrokerMock.VerifyNoOtherCalls();            
         }
 
-        [Fact]
-        public async Task ShouldThrowCriticalDependencyExceptionOnRegisterIfUrlNotFoundErrorOccursAndLogItAsync()
+        public static TheoryData CriticalApiExceptions()
         {
-            // given
-            Student someStudent = CreateRandomStudent();
             string exceptionMessage = GetRandomString();
             var responseMessage = new HttpResponseMessage();
 
             var httpResponseUrlNotFoundException = new HttpResponseUrlNotFoundException(responseMessage: responseMessage, message: exceptionMessage);
 
-            var expectedDependencyException = new StudentDependencyException(httpResponseUrlNotFoundException);
+            var httpResponseUnauthorizedException = new HttpResponseUnauthorizedException(responseMessage: responseMessage, message: exceptionMessage);
+
+            return new TheoryData<Exception>
+            {
+                httpResponseUrlNotFoundException,
+                httpResponseUnauthorizedException
+            };
+        }
+
+        [Theory]
+        [MemberData(nameof(CriticalApiExceptions))]
+        public async Task ShouldThrowCriticalDependencyExceptionOnRegisterIfUrlNotFoundErrorOccursAndLogItAsync(Exception httpResponseCriticalException)
+        {
+            // given
+            Student someStudent = CreateRandomStudent();
+                        
+            var expectedDependencyException = new StudentDependencyException(httpResponseCriticalException);
 
             this.apiBrokerMock.Setup(broker =>
                 broker.PostStudentAsync(It.IsAny<Student>()))
-                    .ThrowsAsync(httpResponseUrlNotFoundException);
+                    .ThrowsAsync(httpResponseCriticalException);
             // when
             ValueTask<Student> registerStudentTask = this.studentService.RegisterStudentAsync(someStudent);
 
