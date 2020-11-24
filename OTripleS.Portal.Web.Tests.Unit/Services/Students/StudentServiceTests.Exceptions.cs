@@ -32,7 +32,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
         public async Task ShouldThrowDependencyValidationExceptionOnRegisterIfBadRequestErrorOccursAndLogItAsync(Exception validationApiException)
         {
             // given
-            Student someStudent = CreateRandomStudent();            
+            Student someStudent = CreateRandomStudent();
 
             var expectedDependencyValidationException = new StudentDependencyValidationException(validationApiException);
 
@@ -55,7 +55,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
                     Times.Once);
 
             this.apiBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         public static TheoryData CriticalApiExceptions()
@@ -80,7 +80,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
         {
             // given
             Student someStudent = CreateRandomStudent();
-                        
+
             var expectedDependencyException = new StudentDependencyException(httpResponseCriticalException);
 
             this.apiBrokerMock.Setup(broker =>
@@ -128,7 +128,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
             //given
             Student someStudent = CreateRandomStudent();
             string exceptionMessage = GetRandomString();
-            
+
             var expectedStudentDependencyException = new StudentDependencyException(dependencyApiException);
 
             this.apiBrokerMock.Setup(broker =>

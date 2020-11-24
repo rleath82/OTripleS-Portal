@@ -3,9 +3,6 @@ using Moq;
 using OTripleS.Portal.Web.Models.Students;
 using OTripleS.Portal.Web.Models.StudentViews;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,7 +16,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.StudentViews
             //given
             Guid randomUserId = Guid.NewGuid();
             DateTimeOffset randomDateTime = GetRandomDate();
-            dynamic randomStudentViewProperties = 
+            dynamic randomStudentViewProperties =
                 CreateRandomStudentViewProperties(
                     auditDates: randomDateTime,
                     auditIds: randomUserId);

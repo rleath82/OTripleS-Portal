@@ -5,8 +5,6 @@ using OTripleS.Portal.Web.Models.StudentViews;
 using OTripleS.Portal.Web.Services.Students;
 using OTripleS.Portal.Web.Services.Users;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OTripleS.Portal.Web.Services.StudentViews

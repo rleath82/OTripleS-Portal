@@ -40,6 +40,6 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.Students
             filler.Setup().OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;
-        }        
+        }
     }
 }
