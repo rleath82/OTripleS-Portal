@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using KellermanSoftware.CompareNetObjects;
+using Moq;
 using OTripleS.Portal.Web.Brokers.DateTimes;
 using OTripleS.Portal.Web.Brokers.Logging;
 using OTripleS.Portal.Web.Models.Students;
@@ -9,6 +10,7 @@ using OTripleS.Portal.Web.Services.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Tynamix.ObjectFiller;
@@ -21,6 +23,7 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.StudentViews
         private readonly Mock<IUserService> userServiceMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly ICompareLogic compareLogic;
         private readonly IStudentViewService studentViewService;
 
         public StudentViewServiceTests()
@@ -29,6 +32,9 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.StudentViews
             this.userServiceMock = new Mock<IUserService>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
+            var compareConfig = new ComparisonConfig();
+            compareConfig.IgnoreProperty<Student>(student => student.Id);
+            this.compareLogic = new CompareLogic();
 
             this.studentViewService = new StudentViewService(
                 studentService: this.studentServiceMock.Object,
@@ -44,12 +50,12 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.StudentViews
             return new
             {
                 Id = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
+                UserId = Guid.NewGuid().ToString(),
                 IdentityNumber = GetRandomString(),
                 FirstName = GetRandomName(),
                 MiddleName = GetRandomName(),
-                FamilyName = GetRandomName(),
-                DateOfBirth = GetRandomDate(),
+                LastName = GetRandomName(),
+                BirthDate = GetRandomDate(),
                 Gender = randomStudentGender,
                 GenderView = (StudentViewGender)randomStudentGender,
                 CreatedDate = auditDates,
@@ -57,6 +63,12 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.StudentViews
                 CreatedBy = auditIds,
                 UpdatedBy = auditIds
             };
+        }
+
+        private Expression<Func<Student, bool>> SameStudentAs(Student expectedStudent)
+        {
+            return actualStudent => this.compareLogic.Compare(expectedStudent, actualStudent)
+                    .AreEqual;
         }
 
         private static string GetRandomName() =>
