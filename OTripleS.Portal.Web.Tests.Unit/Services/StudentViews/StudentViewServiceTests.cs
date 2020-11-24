@@ -34,7 +34,8 @@ namespace OTripleS.Portal.Web.Tests.Unit.Services.StudentViews
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
             var compareConfig = new ComparisonConfig();
             compareConfig.IgnoreProperty<Student>(student => student.Id);
-            this.compareLogic = new CompareLogic();
+            compareConfig.IgnoreProperty<Student>(student => student.UserId);
+            this.compareLogic = new CompareLogic(compareConfig);
 
             this.studentViewService = new StudentViewService(
                 studentService: this.studentServiceMock.Object,
